@@ -6,36 +6,61 @@
 <body>
 	
 	<div id="wrapper">
-		<div id="pomodoro-box">
-			<h2>Pomodoro timer</h2>
-			<div class="time" id="timer">00:00</div>
-			<!-- <div class="time-strip"></div> -->
-			<div class="controls" id="pomodoro-controls">
-				<div class="button-container">
-					<div class="button" id="workButton">work</div>
-					<div class="button-time">25:00</div>
-				</div>
-				<div class="button-container">
-					<div class="button" id="restButton">rest</div>
-					<div class="button-time">5:00</div>
+		<div id="main-panel">
+			<div id="pomodoro-box">
+				<h2>Pomodoro timer</h2>
+				<div class="time" id="timer">00:00</div>
+				<!-- <div class="time-strip"></div> -->
+				<div class="controls" id="pomodoro-controls">
+					<div class="button-container">
+						<div class="button" id="workButton">work</div>
+						<div class="button-time">25:00</div>
+					</div>
+					<div class="button-container">
+						<div class="button" id="restButton">rest</div>
+						<div class="button-time">5:00</div>
+					</div>
 				</div>
 			</div>
+			<hr>
+			<div id="counter-box">
+				<h2>Sitting timer</h2>
+				<div class="time" id="counter">--:--:--</div>
+				<div class="controls" id="counter-controls">
+					<div class="button" id="resetCounter">reset</div>
+					<div class="button" id="startpauseCounter">
+						<span class="start">start</span>
+						<span class="pause">pause</span>
+					</div>
+				</div>
+			</div>
+			<button id="settingsButton" title="settings">settings</button>
 		</div>
-		<hr>
-		<div id="counter-box">
-			<h2>Sitting timer</h2>
-			<div class="time" id="counter">--:--:--</div>
-			<div class="controls" id="counter-controls">
-				<div class="button" id="resetCounter">reset</div>
-				<div class="button" id="startpauseCounter">
-					<span class="start">start</span>
-					<span class="pause">pause</span>
+		<div id="settings-panel">
+			<button id="settingsCloseButton" title="Close settings">Close settings</button>
+			<div id="settings-panel-inner">
+				
+				<h2>Settings</h2>
+				
+				<h3>Theme</h3>
+				<div>
+					<input type="radio" id="select-theme-default" name="select-theme" value="default" autocomplete="off" checked>
+					<label for="select-theme-default">Default</label>
+				</div>
+				
+				<div>
+					<input type="radio" id="select-theme-dark" name="select-theme" value="dark" autocomplete="off" >
+					<label for="select-theme-dark">Dark</label>
 				</div>
 			</div>
 		</div>
 	</div>
 	
 	<style>
+		
+		* {
+			box-sizing: border-box;
+		}
 		
 		#wrapper {
 			margin-left: auto;
@@ -47,9 +72,82 @@
 			position: relative;
 		}
 		
+		body[data-theme="dark"] #wrapper {
+			background-color: #222;
+			color: #bbb;
+		}
+		
+		button {
+			background-color: #fbfbfb;
+			border: 2px solid #aaa;
+		}
+		
+		body[data-theme="dark"] button {
+			background-color: #555;
+		}
+		
+		#settingsButton,
+		#settingsCloseButton {
+			position: absolute;
+			top: 0;
+			right: 0;
+			width: 40px;
+			height: 40px;
+			font-size: 0px;
+			text-indent: -9999px;
+			padding: 2px;
+			border-radius: 4px;
+			background-size: 30px 30px;
+			background-position: center center;
+			background-repeat: no-repeat;
+		}
+		
+		#settingsButton {
+			background-image: url('data:image/png;base64,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');
+		}
+		
+		#settingsCloseButton {
+			background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACABAMAAAAxEHz4AAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAAT2AAAE9gGYDiZUAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAABVQTFRF////AAAAAAAAAAAAAAAAAAAAAAAAPYbscQAAAAZ0Uk5TAARUp6v7ZOI89wAAAgBJREFUaN6lmruVgzAQRQUVEFCAz9mjBjbYnMQFOKCBxdN/CQ6WtUDoM8/XmY5HfhcQ83UIIYQwfAf58zUdFvPzpu4f1yUthrs91B+ItiWE2UxFGFez5QBgKkI0SwizmYowrmZvhOFupiJEs4Qwm6kIfwA7wg4gIcR9yzYlAAXhH8BsOQAICPG9ZZsSgB8hAZgt4SctvAjxsOX3tPIhHAHskS9FgOctyAgXRRXhKqghFPQ0hJKcglBUUxDKYn6EipYfoSblRagqeRHqQj6Eho4PoSXjQWiqeBDaIn2EjkYfoSfR+76r0DPoX2PbwnGX2yae59yycZ20lpHvrNetnG9b3cz7vtfs3B6nZuj3eWVLweuWTRW/X7KVIk/JWIt9V2sx+l7N1fif28sZSL5Bz4HOO/QUKEPQATIEHSBD+ADgjPABQA1BqQciAygjaDVRZAAlBLUujAzgiqDXxpEB5Ag6QIagA/AfwJdAbyJ+jPQg4aNMXyb8OlOHgl0adarYrdPAgkMbDa44vNMEA6c4NMnCaR5NNHGqS5NtnO7TggOXPLTowmUfLTxx6UuLb1z+0wYEboHQJgxuA9FGFG6F0WYcbgfShiRuidKmLG4L08Y0bo3T5jweD9ABBR6R4CENHhPhQRUeleFhHR8X4oElH5nioS0fG+PBNR+d4+E9+fvAC4KFTDHunKDhAAAAAElFTkSuQmCC');
+		}
+		
+		#settings-panel {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 0px;
+			background-color: rgba(255, 255, 255, 0.6);
+			overflow-y: auto;
+		}
+		
+		body[data-theme="dark"] #settings-panel {
+			background-color: rgba(0, 0, 0, 0.6);
+		}
+		
+		#settings-panel #settings-panel-inner {
+			padding: 40px;
+			text-align: left;
+		}
+		
+		#settings-panel h2 {
+			text-align: center;
+		}
+		
+		#wrapper.settings-panel-opened #settings-panel {
+			height: 100%;
+		}
+		#wrapper.settings-panel-opened #main-panel {
+			filter: blur(5px);
+		}
+		
 		h2 {
+			font-size: 17px;
+			opacity: 0.4;
+		}
+		
+		h3 {
 			font-size: 16px;
-			font-weight: normal;
+			opacity: 0.6;
 		}
 		
 		#timer {
@@ -136,6 +234,22 @@
 	</style>
 	
 	<script>
+		
+		settingsButton.addEventListener('click', function() {
+			wrapper.classList.toggle('settings-panel-opened');
+		});
+		
+		settingsCloseButton.addEventListener('click', function() {
+			wrapper.classList.toggle('settings-panel-opened');
+		});
+		
+		
+		document.querySelectorAll('input[name="select-theme"]').forEach(function(radio) {
+			radio.addEventListener('change', function() {
+				var themeName = this.value;
+				document.body.setAttribute('data-theme', themeName);
+			});
+		});
 		
 		
 		var pomodoro = {
